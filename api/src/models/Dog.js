@@ -8,5 +8,9 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-  });
+  },
+  {
+    freezeTableName: true
+  }
+  );
 };
