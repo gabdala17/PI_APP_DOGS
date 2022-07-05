@@ -42,16 +42,19 @@ const {searchDogs, listDogs} = require('./controllers');
 router.get('/', async (req, res, next)=>{
     try {
         const {name}= req.query;
+        let nombre = name.split(" ").filter(s=>s).map(s=>s.toLowerCase()).join(" ")
     let racePromiseApi;
     
     let racePromiseDB;
     if(name){
         racePromiseApi= await searchDogs(name)
-        console.log(racePromiseApi)
+        //console.log(racePromiseApi)
         racePromiseDB = await Race.findAll({
                 include: Temperament,
                 where:{
-                    name : name
+                    name : {
+                        [Op.like]: `%${nombre}%`
+                    }
                 }
         })
     }
@@ -107,15 +110,20 @@ router.post('/',async(req,res,next)=>{
 Recibe los datos recolectados desde el formulario controlado de la ruta de creación de raza de perro por body
 Crea una raza de perro en la base de datos relacionada con sus temperamentos */
  try {
-        const {id, name, image, temperament, weightMax, weightMin, heightMax, heightMin, life_spanMin, life_spanMax} = req.body
+        const { name, image, temperament, weightMax, weightMin, heightMax, heightMin, life_spanMin, life_spanMax} = req.body
+            // console.log('body=>', req.body)
         let promiseApi= await searchDogs(name)
-        let promiseDB = await listDogs();
-        let someDB= promiseDB.some(el=>el.name===name)
+        let promiseDB = await await Race.findAll({
+            include: Temperament,          
+          })
+          let nombre= name.split(" ").filter(s=>s).map(s=>{return s.toLowerCase()}).join(" ")
+        
+        let someDB= promiseDB.some(el=>el.name===nombre)
+            //console.log('esto me trae SOME DE LA BASE DE DATOS', someDB)
         if(!name || !temperament || !weightMax || !weightMin || !heightMax || !heightMin) return res.status(404).send('Faltan datos obligatorios')
         if(someDB || promiseApi.length>0) return res.status(404).send(`La raza ${name} ya existe`)
-        const newRace= await Race.create({
-            id, 
-            name, 
+        const newRace= {
+            name: nombre, 
             image, 
             temperament,
             weightMax, 
@@ -124,8 +132,10 @@ Crea una raza de perro en la base de datos relacionada con sus temperamentos */
             heightMin, 
             life_spanMin, 
             life_spanMax
-        })
-        res.status(201).send(newRace)
+        }
+        const newDog=await Race.create(newRace)
+      
+        res.status(201).send(newDog)
     } catch (error) {
         next (error)
     }
