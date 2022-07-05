@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    weight:{
+    weightMin:{
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -34,6 +34,9 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
     },
     life_spanMax:{
+        type: DataTypes.STRING,
+    }, 
+    image:{
         type: DataTypes.STRING,
     }
   },
