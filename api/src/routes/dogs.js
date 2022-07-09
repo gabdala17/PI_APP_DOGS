@@ -104,8 +104,9 @@ router.get('/:idRaza',async (req,res,next)=>{
     }
 })
 /**/
-router.post('/',async(req,res,next)=>{
 
+
+router.post('/',async(req,res,next)=>{
 /*[ ] POST /dogs:
 Recibe los datos recolectados desde el formulario controlado de la ruta de creación de raza de perro por body
 Crea una raza de perro en la base de datos relacionada con sus temperamentos */

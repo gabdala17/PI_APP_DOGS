@@ -13,12 +13,18 @@ let searchDogs=async(name)=>{
    
         const racePromiseApi= await axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${name}&&?api_key=${API_KEY}`)
         let filtered=racePromiseApi.data.map(el=>{
+          console.log(el)
           return{
               id:el.id,
               name: el.name,
               temperament:el.temperament,
-              image: el.image,
-              weight: el.weight.metric,
+              image: `https://cdn2.thedogapi.com/images/${el.reference_image_id}.jpg`,
+              weightMin: el.weight.metric.split(' - ')[0],
+              weightMax: el.weight.metric.split(' - ')[1],
+              heightMin: el.height.metric.split(' - ')[0],
+              heightMax: el.height.metric.split(' - ')[1],
+              life_spanMin: el.life_span.split(' - ')[0],
+              life_spanMax: el.life_span.split(' - ')[1].split(' ')[0]
 
           }
       })
@@ -31,14 +37,19 @@ let searchDogs=async(name)=>{
 }
 
 let listDogs=async()=>{
- let racePromiseApi=await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)
+ let racePromiseApi=await axios.get(`https://api.thedogapi.com/v1/breeds`)
         let filtered=racePromiseApi.data.map(el=>{
             return{
                 id:el.id,
                 name: el.name,
                 temperament:el.temperament,
-                image: el.image,
-                weight: el.weight.metric
+                image: `https://cdn2.thedogapi.com/images/${el.reference_image_id}.jpg`,
+                weightMin: el.weight.metric.split(' - ')[0],
+                weightMax: el.weight.metric.split(' - ')[1],
+                heightMin: el.height.metric.split(' - ')[0],
+                heightMax: el.height.metric.split(' - ')[1],
+                life_spanMin: el.life_span.metric.split(' - ')[0],
+                life_spanMax: el.life_span.metric.split(' - ')[1]
             }
         })
        

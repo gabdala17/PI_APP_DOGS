@@ -1,10 +1,16 @@
 import './App.css';
+import React from 'react';
+import NavBar from './Components/NavBar';
+import Search from './Components/Search';
+import Dogs from './Components/Dogs';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Henry Dogs</h1>
-    </div>
+    <React.Fragment>
+      <NavBar/>
+      <Search/>
+      <Dogs />
+    </React.Fragment>
   );
 }
 
