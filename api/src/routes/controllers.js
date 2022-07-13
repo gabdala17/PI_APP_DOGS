@@ -24,7 +24,7 @@ let searchDogs=async(name)=>{
               heightMin: el.height.metric.split(' - ')[0],
               heightMax: el.height.metric.split(' - ')[1],
               life_spanMin: el.life_span.split(' - ')[0],
-              life_spanMax: el.life_span.split(' - ')[1].split(' ')[0]
+              //life_spanMax: el.life_span.split(' - ')[1].split(' ')[0]
 
           }
       })
@@ -35,10 +35,33 @@ let searchDogs=async(name)=>{
   
         
 }
+let dogsId=async(id)=>{
+   
+  let racePromiseApi= await axios.get(`https://api.thedogapi.com/v1/breeds/${id}/?api_key=${API_KEY}`)
+  //console.log(racePromiseApi)
+  let el=racePromiseApi.data
+     return{
+        id:el.id,
+        name: el.name,
+        temperament:el.temperament,
+        image: `https://cdn2.thedogapi.com/images/${el.reference_image_id}.jpg`,
+        weightMin: el.weight.metric.split(' - ')[0],
+        weightMax: el.weight.metric.split(' - ')[1],
+        heightMin: el.height.metric.split(' - ')[0],
+        heightMax: el.height.metric.split(' - ')[1],
+        life_spanMin: el.life_span.split(' - ')[0],
+        life_spanMax: el.life_span.split(' - ')[1].split(' ')[0]
+    }
+  console.log('aca=>',el)  
+}
+
 
 let listDogs=async()=>{
  let racePromiseApi=await axios.get(`https://api.thedogapi.com/v1/breeds`)
-        let filtered=racePromiseApi.data.map(el=>{
+
+        let filtered=racePromiseApi.data
+        let fil=filtered.map(el=>{
+          
             return{
                 id:el.id,
                 name: el.name,
@@ -48,45 +71,52 @@ let listDogs=async()=>{
                 weightMax: el.weight.metric.split(' - ')[1],
                 heightMin: el.height.metric.split(' - ')[0],
                 heightMax: el.height.metric.split(' - ')[1],
-                life_spanMin: el.life_span.metric.split(' - ')[0],
-                life_spanMax: el.life_span.metric.split(' - ')[1]
+                life_spanMin: el.life_span.split(' - ')[0],
+                life_spanMax: el.life_span.split(' - ')[1]
             }
         })
        
-        return (filtered) 
+        return (fil) 
    
 }
 let temperamentsFunction=async()=>{
   let racePromiseApi = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)
               let re= await racePromiseApi.data
-             // console.log(re)
+             //console.log(re)
               let response = re.map(el=>{
                         return  el.temperament
                         }).toString().split(',')
-              let newTemper = [...new Set(response)]
-        //console.log("esto busco AHORA=>",response)
+                        
+             let  response1= response.map(el=>{
+                      return el.trim()
+                    })
+                    //console.log("esto busco AHORA=>",response1)
+              let newTemper = [...new Set(response1)]
+              let newTemper1= newTemper.filter(el=>el!=="")
+        
     //console.log("ME INTERESA AHORA=>",temp)
-              return newTemper
+              return newTemper1
 }
 
 let allTemperaments=async ()=>{
   const newTemper=await temperamentsFunction()
   //console.log('Esto trae la response',response)
   
-   // console.log("ME INTERESA AHORA=>",newTemper)
+  // console.log("ME INTERESA AHORA=>",newTemper.length)
   const temperamentDB= await Temperament.findAll({
     include: Race
   })
   if(temperamentDB.length<1){
     for (let i = 0; i < newTemper.length; i++) {
       await Temperament.create({
-        name:newTemper[i].trim().toLowerCase()
+        name:newTemper[i].toLowerCase()
       })
     }
-    return Temperament.findAll()
+    
   }
-  const apiTemper= newTemper.map(el=>el.trim())
-  return apiTemper
+  
+
+  return temperamentDB
 }
 
-module.exports={searchDogs, listDogs,temperamentsFunction, allTemperaments}
+module.exports={searchDogs, listDogs,temperamentsFunction, allTemperaments,dogsId}

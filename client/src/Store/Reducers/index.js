@@ -1,4 +1,4 @@
-import {SEARCH_DOGS, GET_DOGS} from '../../Constants/ActionsConst'
+import {SEARCH_DOGS, GET_DOGS, DETAIL_DOG, LOADING_DOG, SEARCH_TEMPERAMENTS, POST_DOG} from '../../Constants/ActionsConst'
 // // import {ASCENDENTE, DESCENDENTE} from '../../Constants/SortConst'
 const initialState={
     dogs:[],
@@ -26,6 +26,23 @@ let rootReducer=(state=initialState,action )=>{
                 ...state,
                 dogs:action.payload
             }
+        case LOADING_DOG:
+            return{
+                ...state,
+                loading: action.payload
+            }
+        case DETAIL_DOG:
+            return{
+                ...state,
+               // loading: false,
+               detailDog: action.payload
+            }
+        case SEARCH_TEMPERAMENTS:
+            return{
+                ...state,
+                temperament: action.payload
+            }
+
 //         case SORT_NAME:
 //             let orderedDogs=[...state.dogs];
 //             orderedDogs.sort((a,b)=>{

@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import Search from './Search'
 
 export default function NavBar() {
   return (
@@ -18,6 +19,9 @@ export default function NavBar() {
            <NavLink to={'/about'} >ABOUT</NavLink> 
         </li>
       </ul>
+      <div>
+      <Search />
+      </div>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-[{
+let obj=[{
 "weight": {
     "imperial": "6 - 13",
     "metric": "3 - 6"
@@ -22,3 +22,4 @@
     "url": "https://cdn2.thedogapi.com/images/BJa4kxc4X.jpg"
 }
 }]
+console.log(obj[0].image.url)

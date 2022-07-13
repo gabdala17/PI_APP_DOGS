@@ -7,7 +7,7 @@ const axios = require('axios')
 const {
     API_KEY
   } = process.env;
-const {searchDogs, listDogs} = require('./controllers');
+const {searchDogs, listDogs, dogsId} = require('./controllers');
 
 
 
@@ -39,14 +39,16 @@ const {searchDogs, listDogs} = require('./controllers');
 //BIEN HECHO
 //     ^
 //    ||
+
 router.get('/', async (req, res, next)=>{
     try {
         const {name}= req.query;
-        let nombre = name.split(" ").filter(s=>s).map(s=>s.toLowerCase()).join(" ")
-    let racePromiseApi;
-    
-    let racePromiseDB;
+        let racePromiseApi 
+        let racePromiseDB
+       
     if(name){
+        
+        let nombre = name.split(" ").filter(s=>s).map(s=>s.toLowerCase()).join(" ")
         racePromiseApi= await searchDogs(name)
         //console.log(racePromiseApi)
         racePromiseDB = await Race.findAll({
@@ -59,7 +61,8 @@ router.get('/', async (req, res, next)=>{
         })
     }
     else{
-        racePromiseApi= await listDogs()
+       
+        racePromiseApi = await listDogs()
         racePromiseDB = await Race.findAll({
             include: Temperament,
         })
@@ -68,7 +71,7 @@ router.get('/', async (req, res, next)=>{
         let allDogs=[racePromiseApi.flat(),...racePromiseDB.flat()].flat()
         //const finallyDogs= allDogs.flat()
         if(allDogs.length===0) return res.status(404).send('No existe la raza')
-        res.status(201).send(allDogs) 
+        res.status(200).send(allDogs) 
     } catch (error) {
         next(error)
     }
@@ -80,20 +83,7 @@ router.get('/:idRaza',async (req,res,next)=>{
    let response
      try {
         if(typeof idRaza === 'string' && idRaza.length<8){
-            let racePromiseApi = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)
-            let re=racePromiseApi.data
-           // console.log(re)
-            let fil = re.filter(el=> el.id === idRaza)
-            console.log(fil)
-            response = fil.map(el=>{
-                return  {id: fil.id,
-                    name: fil.name,
-                    temperament:fil.temperament,
-                    image: fil.image,
-                    weight: fil.weight,
-                    height: fil.height
-                }
-                })
+            response = await (dogsId(idRaza))
         }
         else{
             response= await Race.findByPk(idRaza)
