@@ -1,18 +1,25 @@
 import React from 'react';
 import { useState } from 'react'
 import {useDispatch} from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import {searchDogs} from '../Store/Actions'
-//import React from 'react'
+
 
 
 function Search() {
     const [input, setInput]=useState('')
     //console.log(input)
+    let navigate= useNavigate()
     let dispatch = useDispatch()
     let handleSubmit=(e)=>{
         //console.log(e.target.value)
-        e.preventDefault();
-        dispatch(searchDogs(input))
+        try {
+          e.preventDefault();
+          dispatch(searchDogs(input))
+          
+        } catch (error) {
+          navigate('/notdog')
+        }
     }
     //console.log(handleSubmit(e))
     let handleChange=(e)=>{
@@ -34,28 +41,5 @@ function Search() {
 export default Search
 
 
-
-
-//export default function Search() {
-    
-    //     const [input, setInput]=useState('')
-    //     let dispatch = useDispatch()
-    //     let handleChange=(e)=>{
-    //         e.preventDefault();
-    //         setInput(e.target.value)
-    //     }
-    //     let handleSubmit=(e)=>{
-    //         e.preventDefault();
-    //         dispatch(searchDogs(input))
-    //         setInput('')
-    //     }
-    //   return (
-    //     <form onSubmit={handleSubmit}>
-    //         <input type='text' value={input} placeholder= 'Raza de Canino...' onChange={handleChange} autocomplete="off"  />
-    //         <input type='submit' value= "Buscar" />
-    //     </form>
-    //   )
-  
-//}
 
 

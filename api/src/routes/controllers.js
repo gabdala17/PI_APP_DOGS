@@ -1,8 +1,6 @@
 require('dotenv').config();
 const express = require('express')
-const router = express.Router()
 const  {Race, Temperament}= require('../db')
-const { Op } = require("sequelize");
 const axios = require('axios')
 const {
     API_KEY
@@ -10,69 +8,70 @@ const {
 
 
 let searchDogs=async(name)=>{
-   
-        const racePromiseApi= await axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${name}&&?api_key=${API_KEY}`)
-        let filtered=racePromiseApi.data.map(el=>{
-          console.log(el)
-          return{
-              id:el.id,
-              name: el.name,
-              temperament:el.temperament,
-              image: `https://cdn2.thedogapi.com/images/${el.reference_image_id}.jpg`,
-              weightMin: el.weight.metric.split(' - ')[0],
-              weightMax: el.weight.metric.split(' - ')[1],
-              heightMin: el.height.metric.split(' - ')[0],
-              heightMax: el.height.metric.split(' - ')[1],
-              life_spanMin: el.life_span.split(' - ')[0],
-              //life_spanMax: el.life_span.split(' - ')[1].split(' ')[0]
-
-          }
-      })
      
-       // console.log('aca=>',racePromiseApi.data)
-         return filtered
-   
-  
+         const getDogsAPIByName = await axios.get(`https://api.thedogapi.com/v1/breeds`);
+
+         let filtered = getDogsAPIByName.data.filter(el=>el.name===name).map(dog => {
+               return {
+                   id: dog.id,
+                   name: dog.name,
+                   temperaments: dog.temperament.replace(/\s/g, '').split(','),
+                   image: dog.image.url,
+                   weightMin: dog.weight.metric.split(' - ')[0],
+                   weightMax: dog.weight.metric.split(' - ')[1],
+                   heightMin: dog.height.metric.split(' - ')[0],
+                   heightMax: dog.height.metric.split(' - ')[1],
+                   life_spanMin: dog.life_span.split(' ')[0],
+                   life_spanMax: dog.life_span.split(' ')[2]
+               }
+           });
+         //console.log('ACAAAAAAAA=====>>>>>>>',filtered)
         
+         return filtered
 }
+
 let dogsId=async(id)=>{
    
-  let racePromiseApi= await axios.get(`https://api.thedogapi.com/v1/breeds/${id}/?api_key=${API_KEY}`)
-  //console.log(racePromiseApi)
-  let el=racePromiseApi.data
-     return{
-        id:el.id,
-        name: el.name,
-        temperament:el.temperament,
-        image: `https://cdn2.thedogapi.com/images/${el.reference_image_id}.jpg`,
-        weightMin: el.weight.metric.split(' - ')[0],
-        weightMax: el.weight.metric.split(' - ')[1],
-        heightMin: el.height.metric.split(' - ')[0],
-        heightMax: el.height.metric.split(' - ')[1],
-        life_spanMin: el.life_span.split(' - ')[0],
-        life_spanMax: el.life_span.split(' - ')[1].split(' ')[0]
-    }
-  console.log('aca=>',el)  
+  // let racePromiseApi= await axios.get(`https://api.thedogapi.com/v1/breeds/${id}/?api_key=${API_KEY}`)
+  // //console.log(racePromiseApi)
+  // let el=racePromiseApi.data
+  const getDogsAPIById = await axios.get(`https://api.thedogapi.com/v1/breeds`);
+
+       let detailDog = getDogsAPIById.data.filter(el=>el.id===Number(id)).map(dog => {
+          return {
+              id: dog.id,
+              name: dog.name,
+              temperaments: dog.temperament,
+              image: dog.image.url,
+              weightMin: dog.weight.metric.split(' - ')[0],
+              weightMax: dog.weight.metric.split(' - ')[1],
+              heightMin: dog.height.metric.split(' - ')[0],
+              heightMax: dog.height.metric.split(' - ')[1],
+              life_spanMin: dog.life_span.split(' ')[0],
+              life_spanMax: dog.life_span.split(' ')[2]
+          }
+      });
+      return detailDog[0]
 }
 
 
 let listDogs=async()=>{
- let racePromiseApi=await axios.get(`https://api.thedogapi.com/v1/breeds`)
+ let racePromiseApi=await axios.get(`https://api.thedogapi.com/v1/breeds/`)
 
         let filtered=racePromiseApi.data
         let fil=filtered.map(el=>{
-          
+              
             return{
                 id:el.id,
                 name: el.name,
-                temperament:el.temperament,
-                image: `https://cdn2.thedogapi.com/images/${el.reference_image_id}.jpg`,
-                weightMin: el.weight.metric.split(' - ')[0],
-                weightMax: el.weight.metric.split(' - ')[1],
-                heightMin: el.height.metric.split(' - ')[0],
-                heightMax: el.height.metric.split(' - ')[1],
-                life_spanMin: el.life_span.split(' - ')[0],
-                life_spanMax: el.life_span.split(' - ')[1]
+                temperaments: el.temperament,
+                image: el.image.url,
+                weightMin: String(el.weight.metric).split(' - ')[0],
+                weightMax: String(el.weight.metric).split(' - ')[1],
+                heightMin: String(el.height.metric).split(' - ')[0],
+                heightMax: String(el.height.metric).split(' - ')[1],
+                life_spanMin: String(el.life_span).split(' ')[0],
+                life_spanMax: String(el.life_span).split(' ')[2]
             }
         })
        
@@ -80,7 +79,7 @@ let listDogs=async()=>{
    
 }
 let temperamentsFunction=async()=>{
-  let racePromiseApi = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)
+  let racePromiseApi = await axios.get(`https://api.thedogapi.com/v1/breeds`)
               let re= await racePromiseApi.data
              //console.log(re)
               let response = re.map(el=>{
@@ -103,19 +102,20 @@ let allTemperaments=async ()=>{
   //console.log('Esto trae la response',response)
   
   // console.log("ME INTERESA AHORA=>",newTemper.length)
-  const temperamentDB= await Temperament.findAll({
+  let temperamentDB= await Temperament.findAll({
     include: Race
   })
   if(temperamentDB.length<1){
     for (let i = 0; i < newTemper.length; i++) {
       await Temperament.create({
-        name:newTemper[i].toLowerCase()
+        name:newTemper[i]
       })
-    }
-    
+    } 
+     temperamentDB = await Temperament.findAll({
+      include: Race
+    })
   }
   
-
   return temperamentDB
 }
 

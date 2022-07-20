@@ -6,6 +6,8 @@ export const SEARCH_TEMPERAMENTS = 'search_temperaments'
 export const POST_DOG = 'post_dog'
 export const SORT_NAME = 'sort'
 export const SORT_WEIGHT = 'sort_weight'
+export const FILTER_ORIGIN = 'filter_origin'
+export const FILTER_TEMPER= 'filter_temper'
 
 
 

@@ -1,21 +1,55 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom';
-//import '../CSS'
-let Dog=({id, name, image, temperament, weightMin, weightMax, heightMin, heightMax, life_spanMin, life_spanMax})=>{
+import '../CSS/dog.css'
+function Dog({id, name, image, temperament, weightMin, weightMax, heightMin, heightMax, life_spanMin, life_spanMax}){
+
+    let tempFinally=[]
+    console.log('aaaaaaa',temperament)
+     if(temperament){
+        if(typeof temperament[0] === 'object'){
+           
+            temperament.forEach(e => {
+                tempFinally.push(e.name)
+            });
+        }
+        else{
+            
+            let temper= String(temperament).split(',')
+            tempFinally=tempFinally.concat(temper)
+        }
+}
+    
+    // let arr = [...temperament ];
+//console.log(temper)
     return(
-    <div>
         
-        {/* <button onClick={onClose}>X</button> */}
-        <NavLink to={`/detail/${id}`}>
-        <h3>{name}</h3>
-        <div className='dog'>
-        <img src={image} alt='imagenPerro'/>
+    <div className='card'>
+         
+        <div className='name'>
+            <NavLink to={`/detail/${id}`} style={{textDecoration:'inherit'}}>
+                <h3>{name}</h3>
+             </NavLink>
         </div>
-        </NavLink>
-        <h2> Temperamentos: {temperament} </h2>
-        {/* <h2> Peso:{weightMin} kg - {weightMax} kg </h2>
-        <h2> Altura:{heightMin} cm - {heightMax} cm </h2>
-        <h2> Esperanza de Vida: {life_spanMin} años - {life_spanMax} años</h2> */}
+
+        <div className='dogImage'>
+            <img src={image} alt='imagenPerro' className='img'/>
+        </div>
+        <div className='weight'>
+            <div className='titleWeight'>Peso: </div>
+               <div className='numberWeight'>{weightMin} kg - {weightMax} kg </div> 
+        </div>
+        <div className='temp'>
+            <div className='tempTitle'> Temperamentos: </div>
+            <div className='nameTempContainer'>
+            {
+                tempFinally.map(tem=>(
+                    <p  className='nameTemp' key={Math.random() * 2.5} > {tem} </p>
+                ))
+            } 
+            </div>
+            
+        </div>
+      
     </div>
     )
 }

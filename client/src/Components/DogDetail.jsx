@@ -3,6 +3,7 @@ import { useEffect, useState} from 'react';
 import {useParams } from 'react-router-dom'
 import axios from 'axios';
 import LoadingSpinner from './Loading';
+import NavBar from './NavBar';
 
 
 function DogDetail() {
@@ -11,9 +12,9 @@ function DogDetail() {
     const {id}= useParams();
 
     //console.log(id)
-    useEffect(()=>{
+    useEffect(async()=>{
         setIsLoading(true);
-        axios.get(`http://localhost:3001/dogs/${id}`)
+        await axios.get(`http://localhost:3001/dogs/${id}`)
         .then(dog=>{
             setDog(dog.data)
             setIsLoading(false);
@@ -22,17 +23,20 @@ function DogDetail() {
             setDog(null)
         }
     },[])
+
+
   return (
     <div>
         {
             isLoading?
             <div> <LoadingSpinner /> </div>:
             <>
+            <NavBar/>
             <h3>{dog.name}</h3>
             <div className='dog'>
             <img src={dog.image} alt='imagenPerro'/>
             </div>
-            <h2> Temperamentos: {dog.temperament} </h2>
+            <h2> Temperamentos: {dog.temperaments} </h2>
             <h2> Peso: {dog.weightMin} kg - {dog.weightMax} kg </h2>
             <h2> Altura: {dog.heightMin} cm - {dog.heightMax} cm </h2>
             <h2> Esperanza de Vida: {dog.life_spanMin} años - {dog.life_spanMax} años</h2> 

@@ -1,0 +1,60 @@
+.navBar{
+  background-color: #383636a8;
+  
+}
+.titlePage {
+  display: flex;
+  color: rgb(56, 3, 105);
+  border-color: rgb(219, 184, 142);
+  justify-content: space-around;
+  margin-top: -3%;
+  margin-bottom: -3%;
+
+  /*display: flex;
+    color: rgb(56, 3, 105);
+    border-color: rgb(219, 184, 142);
+    margin-top: -3%;
+    margin-bottom: -5%;*/
+}
+h1 {
+    font-size: xxx-large;
+    color: #9b357c;
+    font-family: fantasy;
+    
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    background-color: #111;
+  }
+
+  .titlePage{
+    display: flex;
+    color: rgb(56, 3, 105);
+    border-color: rgb(219, 184, 142);
+  }
+  .search {
+    display: flex;
+    justify-content: space-around;
+    
+  }

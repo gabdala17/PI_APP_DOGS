@@ -1,0 +1,47 @@
+.add{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #edd5ef;
+    flex-direction: column;
+}
+.btn-home{
+    display: flex;
+    /* height: 48px; */
+    /* line-height: 45px; */
+    /* width: 434%; */
+    background: #0000009c;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: .1s ease all;
+    box-shadow: 3px 0px 30px rgb(163 163 163);
+    align-content: space-around;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.irHome{
+    font-family: fangsong;
+    display: flex;
+    font-style: inherit;
+    font-size: 220%;
+    /* margin-bottom: 0px; */
+    /* margin-top: 0px; */
+    margin-left: 49%;
+    font-weight: 214%;
+    margin-right: 49%;
+    align-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.resp{
+    display: flex;
+    color: rgb(165, 21, 165);
+}

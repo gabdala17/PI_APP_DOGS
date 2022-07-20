@@ -1,0 +1,9 @@
+.pagination{
+    display: flex;
+}
+.paginationNumber{
+    margin: 5px;
+    cursor: pointer;
+    
+
+}

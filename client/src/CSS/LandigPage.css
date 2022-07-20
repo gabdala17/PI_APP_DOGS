@@ -1,0 +1,29 @@
+.landing{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ text-align: center;
+ 
+
+}
+#fondo{
+    width: 1400px;
+    height: 675px;
+    background-image: url(BellosPerros.jfif);
+    background-repeat: no-repeat;
+}
+.btn{
+  display: flex;
+  border-radius: 25px;
+  text-decoration: none;
+  background-color: #f88c6b;
+  border:#f88c6b;
+  color: #9b1272;
+  text-align:center;
+  font-size: 28px;
+  width: 150px;
+  height: 45px;
+  transition: 0.5s;
+  cursor: pointer;
+  margin: auto;
+}
