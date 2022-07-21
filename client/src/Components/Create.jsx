@@ -76,8 +76,6 @@ function Create() {
     life_spanMin:'', 
     temperaments:[]
   })
-  
-  let [error, setError] =  useState({})
   let temperamentEx = useSelector(state=>state.temperament)
   let dispatch = useDispatch()
   let navigate = useNavigate()
@@ -89,19 +87,18 @@ function Create() {
   let handleChange=(e)=>{
     e.preventDefault();
     setInput((prev)=>({...prev,[e.target.name]:e.target.value}))
-    
-      
+        
   }
   
 
 
   let handleSubmit=async (e)=>{
     e.preventDefault();
-    let validated = await validate(input)
-    console.log('Validate', validate(input))
-    setError(validated)
+    let error = await validate(input)
+    // console.log('Validate', validate(input))
+    // setError(validated)
     console.log('ERROR==>', error)
-    console.log('SETERROR==>', setError)
+   // console.log('SETERROR==>', setError)
 
     if(Object.keys(error).length===0){
       try {
@@ -128,7 +125,7 @@ function Create() {
     life_spanMin:'', 
     temperaments:[]
     })
-    setError({})
+
   }
 
   let handleSelect=(e)=> {    
@@ -152,7 +149,7 @@ function Create() {
   }
  
   function handleDelete(e){
-      console.log('lo que quiero eliminar=> ', e.target.value)
+      //console.log('lo que quiero eliminar=> ', e.target.value)
       setSelect(
         select=select.filter(t=> t!== e.target.value)
         )
@@ -160,6 +157,7 @@ function Create() {
         ...input,
             temperaments: select
       })
+      
     }
 
 
@@ -169,7 +167,8 @@ function Create() {
     
         <form onSubmit={handleSubmit} className='formulario'>
           <div className='formulario_grupo'>
-            <label className='formulario_label'>NOMBRE DE LA RAZA*</label>
+            <label className='formulario_label'>NOMBRE DE LA RAZA*
+            </label>
             <div className='formulario__grupo_input'>
             <input type={'text'}
             name={'name'}
@@ -179,9 +178,8 @@ function Create() {
             required
             />
             </div>
-            <p className='formulario_input_validacion' >El nombre debe contener solo letras y espacios
-               Entre 4 y 18 carácteres.
-            </p>
+              <p > El nombre debe contener solo letras y espacios </p>
+        
           </div>
           <div className='formulario_grupo'>
           <label className='formulario_label'>IMAGEN</label>
@@ -207,7 +205,11 @@ function Create() {
             required
             />
             </div>
-            <p className='formulario_input_validacion' > algo que decir
+            <p > 
+              el peso no puede ser menor a 1 kg
+            </p>
+            <p>
+              debe contener entre 1 y 2 dígitos el peso
             </p>
           </div>
           <div className='formulario_grupo'>
@@ -220,12 +222,16 @@ function Create() {
             className='formulario_input'
             required
             />
-            </div>
-            <p className='formulario_input_validacion' > algo que decir
+            <p > 
+                el peso máximo debe ser mayor al peso mínimo 
+           </p>
+            <p>
+                 debe contener entre 1 y 2 dígitos el peso
             </p>
+            </div>
           </div>
           <div className='formulario_grupo'>
-          <label className='formulario_label'>Altura Minima*</label>
+          <label className='formulario_label'>Altura Minima* (cm)</label>
           <div className='formulario__grupo_input'>
             <input type={'text'}
             name={'heightMin'}
@@ -235,11 +241,15 @@ function Create() {
             required
             />
             </div>
-            <p className='formulario_input_validacion'> algo que decir
+            <p > 
+            la atura no puede ser menor a 15 centimetros
+            </p>
+            <p>
+            debe contener entre 2 y 3 números la altura
             </p>
           </div>
           <div className='formulario_grupo'>
-          <label className='formulario_label'>Altura Máxima*</label>
+          <label className='formulario_label'>Altura Máxima*(cm)</label>
           <div className='formulario__grupo_input'>
             <input type={'text'}
             name={'heightMax'}
@@ -249,7 +259,11 @@ function Create() {
             required
             />
             </div>
-            <p className='formulario_input_validacion' > algo que decir
+            <p > 
+            la atura máxima debe ser mayor a la altura mínima
+            </p>
+            <p>
+            debe contener entre 2 y 3 números la altura
             </p>
           </div>
           <div className='formulario_grupo'>
@@ -262,7 +276,11 @@ function Create() {
             className='formulario_input'
             />
             </div>
-            <p className='formulario_input_validacion' > algo que decir
+            <p className='formulario_input_validacion' > 
+            la esperanza de vida no puede ser menor a un año, 
+            </p>
+            <p>
+            y debe contener entre 1 y 2 números
             </p>
           </div>
           <div className='formulario_grupo'>
@@ -275,7 +293,11 @@ function Create() {
             className='formulario_input'
             />
             </div>
-            <p className='formulario_input_validacion' > algo que decir
+            <p > 
+            la esperanza de vida no puede ser menor a un año, 
+            </p>
+            <p>
+            y debe contener entre 1 y 2 números
             </p>
           </div>
           <div className='formulario_grupo'>

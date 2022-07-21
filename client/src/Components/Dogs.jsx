@@ -10,6 +10,7 @@ import FilterTemp from './FilterTemp'
 import NavBar from './NavBar'
 import '../CSS/dogs.css'
 import Pagination from './Pagination'
+import puppiesGif from '../CSS/perro-info-animada-0331.gif'
 
 
 
@@ -31,8 +32,6 @@ function Dogs() {
       setPageActual(n)
     }
 
-    
-
     useEffect(()=>{
         dispatch(getDogs())
     },[])
@@ -41,8 +40,12 @@ function Dogs() {
       dispatch(searchTemperament())
     },[dispatch])
 
-    console.log(dogs[0])
-
+    console.log('aca message',dogs)
+if(dogs.length){
+  if(dogs[0].message){
+    
+  }
+}
   return (
     <div>
      
@@ -54,6 +57,7 @@ function Dogs() {
      <div className='cardContainer'>
         { isLoading?
             <div> <LoadingSpinner /> </div>:
+          
             puppies.map(dog=>{
                return <Dog
                     key={dog.id}

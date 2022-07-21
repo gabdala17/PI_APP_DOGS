@@ -6,9 +6,9 @@ function Pagination({page, dogsPerPage, allDogs}) {
         numberPage.push(i) 
     }
   return (
-    <div className='pagination'>
+    <div className='pagination' >
   { numberPage.map(number=>(
-    <div className='paginationNumber' onClick={e=>page(e,number)}>{number}</div>
+    <div className='paginationNumber' key={Math.random()*2.5} onClick={e=>page(e,number)}>{number}</div>
    ))}
     </div>
   )

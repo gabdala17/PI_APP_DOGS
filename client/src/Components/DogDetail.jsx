@@ -4,6 +4,7 @@ import {useParams } from 'react-router-dom'
 import axios from 'axios';
 import LoadingSpinner from './Loading';
 import NavBar from './NavBar';
+import '../CSS/detail.css'
 
 
 function DogDetail() {
@@ -31,15 +32,19 @@ function DogDetail() {
             isLoading?
             <div> <LoadingSpinner /> </div>:
             <>
-            <NavBar/>
-            <h3>{dog.name}</h3>
-            <div className='dog'>
-            <img src={dog.image} alt='imagenPerro'/>
+                <NavBar/>
+            <div className='Detail'>
+                <div className='dogImageDetail'>
+                <img src={dog.image} alt='imagenPerro' className='imgDetail'/>
+                </div>
+                <div className='dogDetail'>
+                <h3 className='nameDetail'>{dog.name}</h3>
+                <h2 className='tempDetail'> Temperamentos:</h2> <p className='detailSmall'>{dog.temperaments}</p> 
+                <h2 className='weightDetail'> Peso: </h2><p className='detailSmall'>{dog.weightMin} kg - {dog.weightMax} kg </p>
+                <h2 className='heightDetail'> Altura: </h2><p className='detailSmall'> {dog.heightMin} cm - {dog.heightMax} cm </p>
+                <h2 className='lifeDetail'> Esperanza de Vida: </h2> <p className='detailSmall'> {dog.life_spanMin} años - {dog.life_spanMax} años </p> 
+                </div>
             </div>
-            <h2> Temperamentos: {dog.temperaments} </h2>
-            <h2> Peso: {dog.weightMin} kg - {dog.weightMax} kg </h2>
-            <h2> Altura: {dog.heightMin} cm - {dog.heightMax} cm </h2>
-            <h2> Esperanza de Vida: {dog.life_spanMin} años - {dog.life_spanMax} años</h2> 
             </>
         }
        

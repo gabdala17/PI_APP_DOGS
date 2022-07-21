@@ -1,5 +1,10 @@
 .pagination{
-    display: flex;
+        display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    background-color: silver;
+    color: sienna;
+    font-size: larger;    
 }
 .paginationNumber{
     margin: 5px;

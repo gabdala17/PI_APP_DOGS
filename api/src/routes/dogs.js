@@ -17,11 +17,16 @@ router.get('/', async (req, res, next)=>{
        
     if(name){
         
-        let nombre = name.split(" ").filter(s=>s).map(s=>s.toLowerCase()).join(" ")
-        racePromiseApi= await searchDogs(name)
+        let nombre = name.split(' ');
+         nombre = nombre.map(el=>(
+            el.charAt(0).toUpperCase() + el.toLowerCase().slice(1)
+            )).join(' ')
+        racePromiseApi= await searchDogs(nombre)
         //console.log(racePromiseApi)
         racePromiseDB = await Race.findAll({
-                include:{Temperament} ,
+                include:{
+                    model: Temperament,
+                } ,
                 where:{
                     name : {
                         [Op.like]: `%${nombre}%`
@@ -44,7 +49,7 @@ router.get('/', async (req, res, next)=>{
 
         let allDogs=[racePromiseApi.flat(),...racePromiseDB.flat()].flat()
         //const finallyDogs= allDogs.flat()
-        if(allDogs.length===0) return res.status(404).send('No existe la raza')
+        if(allDogs.length===0) return res.status(404).send([{message:'No existe la raza'}])
         res.status(200).send(allDogs) 
     } catch (error) {
         next(error)

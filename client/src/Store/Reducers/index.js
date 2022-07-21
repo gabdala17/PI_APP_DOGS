@@ -7,7 +7,8 @@ const initialState={
     detailDog: {},
     temperament: [],
     ordererDogs:[],
-    loading:false
+    loading:false,
+    searchDog:[]
  }
 
 let rootReducer=(state=initialState,action )=>{
@@ -20,9 +21,21 @@ let rootReducer=(state=initialState,action )=>{
                 loading: false
             }
         case SEARCH_DOGS:
+            if(!action.data){
+            console.log('aca entraaa')
             return{
                 ...state,
-                dogs:action.payload
+                searchDog:action.payload,
+                loading: false
+            }
+        }
+            else{
+                console.log('aca entraaa erroooor')
+                return{
+                    ...state,
+                    searchDog: action.data,
+                    loading: false
+                }
             }
         case LOADING_DOG:
             return{
@@ -87,8 +100,8 @@ let rootReducer=(state=initialState,action )=>{
                     filteredDog: filterOrigin
                 }
             case FILTER_TEMPER:
-                let x= action.payload.charAt(0).toUpperCase()
-                let payload= x + action.payload.slice(1)
+                // let x= action.payload.charAt(0).toUpperCase()
+                // let payload= x + action.payload.slice(1)
                 //console.log('aaaaaa',payload)
 
                 let perros=[...state.dogs];
@@ -97,9 +110,9 @@ let rootReducer=(state=initialState,action )=>{
                 perros.forEach(perro=>{
                     //console.log('aca perro.temperament=>', perro.temperament)
                     
-                    let temp=String(perro.temperament)
+                    let temp=String(perro.temperaments)
                    // console.log('aca String(perro.temperament)=>', temp)
-                    if(temp.includes(payload) ||temp.includes(action.payload)) cachorro.push(perro)
+                    if(temp.includes(action.payload) /*||temp.includes(action.payload)*/) cachorro.push(perro)
                 })
                 console.log('cachorro', cachorro)
 

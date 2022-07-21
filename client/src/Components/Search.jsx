@@ -12,14 +12,18 @@ function Search() {
     let navigate= useNavigate()
     let dispatch = useDispatch()
     let handleSubmit=(e)=>{
-        //console.log(e.target.value)
-        try {
-          e.preventDefault();
-          dispatch(searchDogs(input))
+      if(input.length<1){
+        alert('escriba una raza')
+      }
+       else{
+         e.preventDefault();
+         dispatch(searchDogs(input))
+         let path='/search'
+         navigate(path)
+         setInput('')
+       }
           
-        } catch (error) {
-          navigate('/notdog')
-        }
+      
     }
     //console.log(handleSubmit(e))
     let handleChange=(e)=>{

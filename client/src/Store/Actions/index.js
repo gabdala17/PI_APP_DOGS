@@ -1,6 +1,6 @@
 // // import {GET_DOGS, SEARCH_DOGS, SORT_NAME, SORT_WEIGHT, SEARCH_TEMPERAMENTS} from '../../Constants/ActionsConst'
 import axios from 'axios'
-import {SEARCH_DOGS, GET_DOGS, DETAIL_DOG, LOADING_DOG, SEARCH_TEMPERAMENTS, POST_DOG, SORT_NAME, SORT_WEIGHT, FILTER_ORIGIN, FILTER_TEMPER} from '../../Constants/ActionsConst'
+import {SEARCH_DOGS, GET_DOGS, DETAIL_DOG, LOADING_DOG, SEARCH_TEMPERAMENTS, SORT_NAME, SORT_WEIGHT, FILTER_ORIGIN, FILTER_TEMPER} from '../../Constants/ActionsConst'
 
 export function loadingDog(){
     return ({
@@ -28,15 +28,21 @@ export function getDogs(){
 
 export function searchDogs(name){
     return function(dispatch){
+        dispatch(loadingDog())
         axios.get(`http://localhost:3001/dogs?name=${name}`)
         .then(dog=>{
+            console.log('asi trae la busqueda=>',dog.data)
             dispatch({
                 type: SEARCH_DOGS,
                 payload: dog.data
             })
         })
         .catch(error=>{
-            console.log(error)
+            console.log('asi trae el error=>',typeof (error.response.data))
+            dispatch({
+                type: SEARCH_DOGS,
+                data: error.response.data           //[{message:''}]
+            })
         })
     }
 }
